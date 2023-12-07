@@ -1,1 +1,1 @@
-$playsound $(id) ambient @a ~ ~ ~ $(volume) $(pitch) $(minVolume)
+$playsound $(id) neutral @a ~ ~ ~ $(volume) $(pitch) $(minVolume)

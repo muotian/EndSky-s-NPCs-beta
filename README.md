@@ -51,7 +51,7 @@
 * `function npc:demo/davleek/summon`
 * `function npc:demo/howhow/summon`
 
-若要觸發展示用進度，請執行下列函數後，與相應的NPC互動:
+若要觸發展示用任務，請執行下列函數後，與相應的NPC互動:
 
 * `function quest:demo/mysterious_stone/set` - 與「測試測試收音機」互動。
 * `function quest:demo/sus_mysterious_stone/set` - 與「測試用天天機器人」互動，對話直到選項出現，選擇「交談」。
@@ -59,6 +59,7 @@
 ## 命名空間
 
 NPC系統使用了以下三個命名空間:
+
 * `endsky_npc`
 * `npc`
 * `quest`

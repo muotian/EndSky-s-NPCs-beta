@@ -12,7 +12,7 @@ data modify storage npc:demo howhow.TraderNormal append value {Texts:['{"text":"
 data modify storage npc:demo howhow.TraderNormal append value {Texts:['{"text":"喔乾"}','{"text":"吃得好飽"}']}
 
 data modify storage npc:demo howhow.Buy set value []
-data modify storage npc:demo howhow.Buy append value {buy:{Name:"quest:demo/demo_currency",Count:1b},sell:{Name:"quest:demo/sus_mysterious_stone",Count:1b},maxUses:2147483647}
+data modify storage npc:demo howhow.Buy append value {buy:{Name:"quest:demo/demo_currency",Count:1b},sell:{Name:"quest:demo/sus_mysterious_stone",Count:1b},maxUses:3}
 
 data modify storage npc:demo howhow.Sell set value []
 data modify storage npc:demo howhow.Sell append value {buy:{Name:"quest:demo/not_so_mysterious_stone",Count:64b},sell:{Name:"quest:demo/demo_currency",Count:3b},maxUses:2147483647}

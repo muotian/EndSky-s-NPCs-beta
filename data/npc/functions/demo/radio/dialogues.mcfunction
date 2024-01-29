@@ -6,5 +6,5 @@ data modify storage npc:demo radio.Normal append value {Texts:['{"text":"我是�
 data modify storage npc:demo radio.Exit set value {Texts:['{"text":"學海無涯"}','{"text":"有什麼問題都可以來問喔"}']}
 
 data modify storage npc:demo radio.Idle set value []
-data modify storage npc:demo radio.Idle append value {Text:'{"text":"嗝~"}',Duration:1,Rest:{min:10,max:20},SoundPool:[{id:"minecraft:entity.player.burp",setting:{}}]}
-data modify storage npc:demo radio.Idle append value {Text:'{"text":"嗝~~"}',Duration:2,Rest:{min:3,max:50},SoundPool:[{id:"minecraft:entity.player.burp",setting:{}}]}
+data modify storage npc:demo radio.Idle append value {Text:'{"text":"嗝~"}',Duration:1,Rest:{min:10,max:20},SoundPool:[{id:"minecraft:entity.player.burp"}]}
+data modify storage npc:demo radio.Idle append value {Text:'{"text":"嗝~~"}',Duration:2,Rest:{min:3,max:50},SoundPool:[{id:"minecraft:entity.player.burp"}]}

@@ -19,3 +19,6 @@ data modify storage npc:<region_id> <npc_id>.Idle set value []
 data modify storage npc:<region_id> <npc_id>.Idle append value {Text:'{"text":"閒置時定時顯示的文字1，不設定亦可"}',Duration:1,Rest:{min:10,max:20}}
 data modify storage npc:<region_id> <npc_id>.Idle append value {Text:'{"text":"閒置時定時顯示的文字2，不設定亦可"}',Duration:{min:3,max:5},Rest:40}
 # ...
+
+# 設定對話音效池 (若無此設定，默認為村民嘀咕聲)
+data modify storage npc:<region_id> <npc_id>.SoundPool set value [{id:"minecraft:entity.pillager.ambient"},{id:"minecraft:entity.vindicator.ambient",setting:{volume:0.2f,pitch:0.5f}}]

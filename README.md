@@ -123,9 +123,11 @@ NPC的基本函數如下列所示:
 
 所有跟NPC互動時的對話、選項等，可在 "dialogue" 函數中設定，設定方法為對該NPC所擁有的「指令空間 (command storage)」進行編輯。  
 (因此請先確保自己能夠操作 `/data modify` 指令的相關基礎功能再來喔。)  
-每個NPC都有其獨立的 `storage`，位置為 `npc:<region_id>` 中的 `<npc_id>` 標籤，這些位置底下的元素會影響該NPC的行為，以下將列出有效的子標籤。  
+每個NPC都有其獨立的 `storage`，位置為 `npc:<region_id>` 中的 `<npc_id>` 標籤，這些位置底下的子標籤會影響該NPC的行為，以下將列出有效的子標籤。  
 
 ### 通常設定
+
+此區為所有NPC皆擁有的設定。  
 
 * Normal (list of compounds) - 可儲存多個通常對話，預設按照順序觸發
   * Texts (list of json strings) - 必填，包含多個 "json string" 的列表，該對話之多行內容，按順序觸發
@@ -143,12 +145,12 @@ NPC的基本函數如下列所示:
     * Extra (compound) - 額外區域，用於儲存選項的回呼函數設定及更多額外設定，詳細內容請見下方同名項目
   * Quest (boolean) - 選填，任務選項模式，於Options存在時才有效果。若設為 `1b`，進入選項時將不會出現「離開」選項，且選項對話結束時亦不會再次進入選項
   * NoExit (boolean) - 選填，若設為 `1b`，進入選項時將不會出現「離開」選項 (選項對話結束時會再次回到選項)。
-  * Extra (compound) - 額外區域，用於儲存通常對話的回呼函數設定及更多額外設定
+  * Extra (compound) - 額外區域，目前用於儲存通常對話的回呼函數設定及更多額外設定
     * StartCommand (string) - 合法指令的字串，將於對話開始時額外執行此指令，執行者為對話中的玩家
     * EndCommand (string) - 合法指令的字串，將於對話正常結束時額外執行此指令，執行者為對話中的玩家
-    * LeaveCommand (string) - 合法指令的字串，將於玩家離開對話距離或登出導致對話結束時額外執行此指令，執行者為對話中的玩家，若玩家登出則會由伺服器執行，因此請盡量不要在此放入 `@s` 的目標選擇器
+    * LeaveCommand (string) - 合法指令的字串，將於玩家離開對話距離或登出導致對話結束時額外執行此指令，執行者為對話中的玩家，若玩家登出則會由伺服器執行
     * SoundOverrides (list of compounds) - 能於指定的對話階段以此設定的內容覆蓋音效池
-      * index (int) - 指定的對話項序數 (0-based)，請依照此項順序填寫 `SoundOverrides` 項目
+      * index (int) - 指定的對話項序數 (0-based)，`SoundOverrides` 內的項目應依此項數值由小至大排列，否則無法正常運作
       * pool (list of compounds) - 內容同下方 `SoundPool` 項目
 * NormalRandom (boolean) - 選填，若設為 `1b`，多個通常對話將以隨機序列被觸發
 * Exit (compound) - 於Options存在或Trader為`1b`時才有效果，將於點選「離開」選項後觸發此處的對話
@@ -161,14 +163,16 @@ NPC的基本函數如下列所示:
     * min (int) - 隨機數 (uniform) 的下界，不得小於0
   * Rest (compound or int) - 距離下次文字顯示的秒數，格式同 `Duration`
   * SoundPool (list of compunds) - 選填，若存在則覆蓋預設的音效池，格式同下
-* SoundPool (list of compounds) - 選填，內容為玩家觸發對話時會隨機撥放其中一個音效，若無此設定則套用預設音效
+* SoundPool (list of compounds) - 選填，內容為玩家觸發對話時會隨機撥放其中一個音效，若無此設定則套用默認音效 (村民嘀咕聲)
   * id (string) - 必填，音效的完整id
-  * setting (compound) - 必填，可留空 (`setting:{}` 這樣就是留空)，若留空則套用預設值
-    * volume (double) - 音量，預設為 `1.0`
-    * pitch (double) - 音高，預設為 `1.0`
-    * minVolume (double) - 最小音量，預設為 `0.0`
+  * setting (compound) - 選填，效果同 `/playsound` 指令的選填參數，若無則套用預設參數
+    * volume (float) - 選填，音量，數值應大於或等於0.0
+    * pitch (float) - 選填，音高，數值應包含於0.0至2.0之間，0.0至0.5間的值等同於0.5
+    * minVolume (float) - 選填，最小音量，數值應包含於0.0至1.0之間 (此設定若大於0.0，將使所有玩家皆能聽到此音效)
 
 ### 商店設定
+
+此區為商店NPC獨有的設定，商店NPC亦適用所有的通常設定。  
 
 * Trader (boolean) - 若設為 `1b`，此NPC將被轉換成商店，並在通常對話結束後進入交易選項
 * TraderNormal (list of compounds) - 選填，可儲存多個商店對話，於交易選項中選擇「交談」後顯示，預設按照順序觸發，單個對話結束後將回到交易選項

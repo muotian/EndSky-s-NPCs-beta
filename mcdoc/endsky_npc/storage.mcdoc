@@ -1,0 +1,234 @@
+use ::java::server::world::item::ItemStack
+
+struct NpcStorage {
+  /// The settings for each NPC.
+  /// 每個 NPC 的設定。
+  [string]: PerNpcStorage
+}
+
+struct PerNpcStorage {
+  /// Stores multiple normal dialogues, witch will be selected in order by default.
+  /// 可儲存多個普通對話，預設會按順序選擇。
+  Normal?: [Dialogue],
+  /// If true, the dialogues will be randomly selected. Defaults to false.
+  /// 若為 true，對話將會隨機選擇。預設為 false。
+  NormalRandom?: boolean,
+  /// The dialogue when the player exits the NPC. Effective only when options is triggered or "Trader" is true.
+  /// 玩家離開 NPC 時的對話。僅在選項觸發或 "Trader" 為 true 時有效。
+  Exit?: Exit,
+  /// The texts when the NPC is idle.
+  /// NPC 閒置時的文字。
+  Idle?: [Idle],
+  /// Common sound pool where sounds will be choosen randomly from when the NPC displays any text. If omitted, the default villager sound will be played.
+  /// NPC 顯示任何文字時將於其中隨機選擇音效的通用音效池。若省略，將播放預設的村民音效。
+  SoundPool?: [Sound],
+  /// If true, the NPC will be a trader. Defaults to false.
+  /// 若為 true，NPC 將會是一個商人。預設為 false。
+  Trader?: boolean,
+  /// Effective only when "Trader" is true. The dialogues for trader NPCs after triggering "chat".
+  /// 僅在 "Trader" 為 true 時有效。觸發「交談」後商人 NPC 的普通對話。
+  TraderNormal?: [Dialogue],
+  /// Effective only when "Trader" is true. If true, the trader dialogues will be randomly selected. Defaults to false.
+  /// 僅在 "Trader" 為 true 時有效。若為 true，商人對話將會隨機選擇。預設為 false。
+  TraderNormalRandom?: boolean,
+  /// Effective only when "Trader" is true. Trading options inside "Buy".
+  /// 僅在 "Trader" 為 true 時有效。「購入」內的交易選項。
+  Buy?: [Recipe],
+  /// Effective only when "Trader" is true. Trading options inside "Sell".
+  /// 僅在 "Trader" 為 true 時有效。「售出」內的交易選項。
+  Sell?: [Recipe],
+}
+
+struct Dialogue {
+  /// The multiple texts that will be displayed.
+  /// 將會顯示的多段文字。
+  Texts: [#[text_component] string],
+  /// Optional. If true, the dialogue will be triggered only once. Defaults to false.
+  /// 選填。若為 true，對話將只會觸發一次。預設為 false。
+  Once?: boolean,
+  /// Optional. Options to choose from after the dialogue.  The maximum number of options is 4.
+  /// 選填。對話或選項對話後可選擇或重新選擇的選項。最多 4 個選項。
+  Options?: [Option] @ 1..4,
+  /// Optional. Effective only when "Options" exists. If true, the "Exit" option will not show and will not turn back to options after option dialogues either. Defaults to false.
+  /// 選填。僅在存在 "Options" 時有效。若為 true，將不會顯示「離開」選項，並且在選項對話後也不會回到選項。預設為 false。
+  Quest?: boolean,
+  /// Optional. If true, the "Exit" option will not show but will turn back to options after option dialogues. Defaults to false.
+  /// 選填。若為 true，將不會顯示「離開」選項，但在選項對話後會回到選項。預設為 false。
+  NoExit?: boolean,
+  /// Optional. Common extra settings for dialogues.
+  /// 選填。對話的通用額外設定。
+  Extra?: Extra,
+}
+
+struct Option {
+  /// The text of the option.
+  /// 選項的文字。
+  Option: #[text_component] string,
+  /// The multiple texts that will be displayed when the option is selected.
+  /// 選擇該選項時將會顯示的多段文字。
+  React: [#[text_component] string],
+  /// Optional. If present, the option won't be selectable if the condition do not match.
+  /// 選填。若此項存在，當條件不符合時該選項將無法選擇。
+  Condition?: Condition,
+  /// Optional. If true, will not turn back to options after this dialogue. Defaults to false.
+  /// 選填。若為 true，在此對話後不會回到選項。預設為 false。
+  End?: boolean,
+  /// Optional. Common extra settings for dialogues.
+  /// 選填。對話的通用額外設定。
+  Extra?: Extra,
+}
+
+type Condition = (
+  struct {
+    /// Type of the condition, can be "item", "score", or "command".
+    /// 條件的類型，可以是 "item"、"score" 或 "command"。
+    Type: "item",
+    /// The item stack that the player must have.
+    /// 玩家必須擁有的物品堆疊。
+    Value: (
+      #[since="1.20.5"] struct {
+        item_predicate: #[item_predicate] string,
+        count?: int @ 1..99,
+      } |
+      #[until="1.20.5"] ItemStack |
+      ),
+  } |
+  struct {
+    /// Type of the condition, can be "item", "score", or "command".
+    /// 條件的類型，可以是 "item"、"score" 或 "command"。
+    Type: "score",
+    /// The scoreboard condition that the player must satisfy.
+    /// 玩家必須滿足的計分板條件。
+    Value: ScoreTest
+  } |
+  struct {
+    /// Type of the condition, can be "item", "score", or "command".
+    /// 條件的類型，可以是 "item"、"score" 或 "command"。
+    Type: "command",
+    /// The command that the player must successfully execute.
+    /// 玩家必須成功執行的指令。
+    Value: #[command] string,
+  } |
+)
+
+struct ScoreTest {
+  /// The objective of the scoreboard.
+  /// 計分板的項目。
+  score: #[objective] string,
+  /// The holder of the scoreboard.
+  /// 計分板的持有者。
+  target: #[score_holder] string,
+  /// The range of the score. Formatted as "int" or "min..max".
+  /// 計分板的範圍。格式為 "int" 或 "min..max"。
+  range: string,
+}
+
+struct Extra {
+  /// Optional. The command that will be executed when the dialogue starts.
+  /// 可選。對話開始時將會執行的指令。
+  StartCommand?: #[command] string,
+  /// Optional. The command that will be executed when the dialogue ends normally.
+  /// 可選。對話正常結束時將會執行的指令。
+  EndCommand?: #[command] string,
+  /// Optional. The command that will be executed when the dialogue ends due to the player leaving.
+  /// 可選。因玩家離開導致對話結束時將會執行的指令。
+  LeaveCommand?: #[command] string,
+  /// Optional. Overrides sound pool for the indicated section of dialogue.
+  /// 可選。覆蓋指定對話部分的音效池。
+  SoundOverrides?: [SoundOverride],
+}
+
+struct Exit {
+  /// The multiple texts that will be displayed.
+  /// 將會顯示的多段文字。
+  Texts: [#[text_component] string],
+  /// Optional. Common extra settings for dialogues.
+  /// 可選。對話的通用額外設定。
+  Extra?: Extra,
+}
+
+struct Idle {
+  /// The one-lined text that will be displayed.
+  /// 將會顯示的單行文字。
+  Text: #[text_component] string,
+  /// The duration of the text display. Fixed value or a range are both supported.
+  /// 文字顯示的持續時間。支援固定值或範圍。
+  Duration: TimeRange,
+  /// The rest time after the text display. Fixed value or a range are both supported.
+  /// 文字顯示後的休息時間。支援固定值或範圍。
+  Rest: TimeRange,
+  /// Optional. Sounds that will be played randomly when the NPC is idle. If omitted, the NPC's common sound pool is used.
+  /// 可選。NPC 閒置時將隨機播放的聲音。若省略，將使用 NPC 的通用音效池。
+  SoundPool?: [Sound],
+}
+
+type TimeRange = (
+  int |
+  struct {
+    /// The minimum value of the range. Must be greater than or equal to 0.
+    /// 範圍的最小值。必須大於或等於 0。
+    min: int @ 0..,
+    /// The maximum value of the range. Must be greater than the minimum value.
+    /// 範圍的最大值。必須大於最小值。
+    max: int @ 0..,
+  }
+)
+
+struct SoundOverride {
+  /// The index of the dialogue section that the sound pool will be overridden.
+  /// 要覆蓋音效池的目標對話段落的索引。
+  index: int @ 0..,
+  /// The sound pool to override.
+  /// 要覆蓋的音效池。
+  pool: [Sound],
+}
+
+struct Sound {
+  /// The sound event ID.
+  /// 音效事件 ID。
+  id: #[id="sound_event"] string,
+  /// Optional. The sound setting.
+  /// 可選。音效設定。
+  setting?: struct SoundSetting {
+    /// Optional. The volume of the sound. Must be greater than or equal to 0. Defaults to 1.
+    /// 可選。音效的音量。必須大於或等於 0。預設為 1。
+    volume?: float @ 0..,
+    /// Optional. The pitch of the sound. Must be inclusivly between 0 and 2. Values less than 0.5 are equavalent to 0.5. Defaults to 1.
+    /// 可選。音效的音調。必須在 0 到 2 之間。小於 0.5 的值等效於 0.5。預設為 1。
+    pitch?: float @ 0..2,
+    /// Optional. The minimum volume of the sound. Must be inclusivly between 0 and 1. Valus greater than 0 will make all players hear the sound regardless of distance. Defaults to 0.
+    /// 可選。音效的最小音量。必須在 0 到 1 之間。大於 0 的值將使所有玩家無論距離如何都能聽到音效。預設為 0。
+    minVolume?: float @ 0..1,
+  },
+}
+
+
+struct Recipe {
+  /// The item stack needed for the offer.
+  /// 交易所需的物品堆疊。
+  buy: TraderItemStack,
+  /// Optional. The extra item stack needed for the offer.
+  /// 可選。交易所需的額外物品堆疊。
+  bugB?: TraderItemStack,
+  /// The item stack that the player will get from the offer.
+  /// 玩家將從交易中獲得的物品堆疊。
+  sell: TraderItemStack,
+  /// The maximum number of times the offer can be used. 2147483647 for infinite.
+  /// 交易可使用的最大次數。2147483647 表示無限次數。
+  maxUses: int @ 0..,
+}
+
+type TraderItemStack = (
+  ItemStack |
+  struct {
+    /// ID of the loot table.
+    /// 戰利品表的 ID。
+    Name: #[id="loot_table"] string,
+    /// Number of items in the stack
+    #[since="1.20.5"]
+    count?: int @ 1..99,
+    /// Number of items in the stack
+    #[until="1.20.5"]
+    Count?: byte,
+  }
+)

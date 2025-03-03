@@ -1,4 +1,4 @@
-data modify storage endsky_npc:trader Interpret.LootTable set value {buy:"empty",buyB:"empty",sell:"empty"}
+data modify storage endsky_npc:trader Interpret.LootTable set value {buy:"endsky_npc:empty",buyB:"endsky_npc:empty",sell:"endsky_npc:empty"}
 data modify storage endsky_npc:trader Interpret.LootTable.buy set from storage endsky_npc:trader Interpret.Sell[0].buy.Name
 data modify storage endsky_npc:trader Interpret.LootTable.buyB set from storage endsky_npc:trader Interpret.Sell[0].buyB.Name
 data modify storage endsky_npc:trader Interpret.LootTable.sell set from storage endsky_npc:trader Interpret.Sell[0].sell.Name

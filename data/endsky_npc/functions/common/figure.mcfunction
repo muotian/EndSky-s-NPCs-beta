@@ -1,6 +1,6 @@
 scoreboard players operation $temp npc.user = @s npc.user
 execute as @e[tag=npc.tag] if score @s npc.user = $temp npc.user run tag @s add npc.this
-execute as @a if score @s npc.player = $temp npc.user run tag @s add npc.user
+execute as @a[scores={npc.state=1..}] if score @s npc.player = $temp npc.user run tag @s add npc.user
 execute anchored eyes facing entity @a[limit=1,tag=npc.user] eyes on passengers positioned as @s run tp @s[type=minecraft:marker] ~ ~ ~ ~ ~
 execute anchored eyes on passengers rotated as @s[type=minecraft:marker] on vehicle positioned ^ ^ ^5 rotated as @s positioned ^ ^ ^20 facing entity @s eyes facing ^ ^ ^-1 positioned as @s run tp @s ~ ~ ~ ~ ~
 data modify entity @s[type=minecraft:armor_stand] Pose.Head set value [0.1f,0f,0f]

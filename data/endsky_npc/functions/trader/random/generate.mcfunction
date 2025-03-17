@@ -8,5 +8,5 @@ execute unless score $dialogue npc.count matches 1.. run return 0
 data modify storage endsky_npc:utils input set value {min:0,max:0}
 execute store result storage endsky_npc:utils input.max int 1 run scoreboard players get $dialogue npc.count
 function endsky_npc:utils/get_uniform with storage endsky_npc:utils input
-execute store result score $index npc.count run data get storage endsky_npc:utils output
+execute store result score $index npc.count run data get storage endsky_npc:utils output.value
 execute if score $index npc.count matches 1.. run function endsky_npc:trader/random/roll

@@ -1,4 +1,4 @@
-use ::java::server::world::item::ItemStack
+use ::java::world::item::ItemStack
 
 struct NpcStorage {
   /// The settings for each NPC.
@@ -31,11 +31,11 @@ struct PerNpcStorage {
   /// Effective only when "Trader" is true. If true, the trader dialogues will be randomly selected. Defaults to false.
   /// 僅在 "Trader" 為 true 時有效。若為 true，商人對話將會隨機選擇。預設為 false。
   TraderNormalRandom?: boolean,
-  /// Effective only when "Trader" is true. Trading options inside "Buy".
-  /// 僅在 "Trader" 為 true 時有效。「購入」內的交易選項。
+  /// Effective only when "Trader" is true. Trading options inside the "Buy" villager.
+  /// 僅在 "Trader" 為 true 時有效。「購入」村民內的交易選項。
   Buy?: [Recipe],
-  /// Effective only when "Trader" is true. Trading options inside "Sell".
-  /// 僅在 "Trader" 為 true 時有效。「售出」內的交易選項。
+  /// Effective only when "Trader" is true. Trading options inside the "Sell" villager.
+  /// 僅在 "Trader" 為 true 時有效。「售出」村民內的交易選項。
   Sell?: [Recipe],
 }
 
@@ -46,18 +46,24 @@ struct Dialogue {
   /// Optional. If true, the dialogue will be triggered only once. Defaults to false.
   /// 選填。若為 true，對話將只會觸發一次。預設為 false。
   Once?: boolean,
-  /// Optional. Options to choose from after the dialogue.  The maximum number of options is 4.
-  /// 選填。對話或選項對話後可選擇或重新選擇的選項。最多 4 個選項。
-  Options?: [Option] @ 1..4,
-  /// Optional. Effective only when "Options" exists. If true, the "Exit" option will not show and will not turn back to options after option dialogues either. Defaults to false.
-  /// 選填。僅在存在 "Options" 時有效。若為 true，將不會顯示「離開」選項，並且在選項對話後也不會回到選項。預設為 false。
-  Quest?: boolean,
-  /// Optional. If true, the "Exit" option will not show but will turn back to options after option dialogues. Defaults to false.
-  /// 選填。若為 true，將不會顯示「離開」選項，但在選項對話後會回到選項。預設為 false。
-  NoExit?: boolean,
+  /// Optional. If present, a list of options will be displayed when the dialogue ends.
+  /// 選填。若存在，對話結束時將會顯示選項列表。
+  Options?: Options,
   /// Optional. Common extra settings for dialogues.
   /// 選填。對話的通用額外設定。
   Extra?: Extra,
+}
+
+struct Options {
+  /// The options to choose from. The maximum number of options is 4.
+  /// 可選擇的選項。最多 4 個選項。
+  List: [Option] @ 1..4,
+  /// Optional. If true, after the chosen dialogue ends, the options will be displayed again. Defaults to false.
+  /// 選填。若為 true，在選擇的對話結束後，選項將會再次顯示。預設為 false。
+  LoopBack?: boolean,
+  /// Optional. If true, the "Exit" option will not show. Defaults to false.
+  /// 選填。若為 true，將不會顯示「離開」選項。預設為 false。
+  NoExit?: boolean,
 }
 
 struct Option {
@@ -70,9 +76,9 @@ struct Option {
   /// Optional. If present, the option won't be selectable if the condition do not match.
   /// 選填。若此項存在，當條件不符合時該選項將無法選擇。
   Condition?: Condition,
-  /// Optional. If true, will not turn back to options after this dialogue. Defaults to false.
-  /// 選填。若為 true，在此對話後不會回到選項。預設為 false。
-  End?: boolean,
+  /// Optional. Independent setting for whether the same options to be displayed again when the dialogue ends.
+  /// 選填。獨立設定對話結束後是否再次顯示相同選項。
+  LoopBack?: boolean,
   /// Optional. Common extra settings for dialogues.
   /// 選填。對話的通用額外設定。
   Extra?: Extra,

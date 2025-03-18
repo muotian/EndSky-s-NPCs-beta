@@ -1,3 +1,0 @@
-use ::endsky_npc::storage::NpcStorage
-
-dispatch :storage[npc:demo] to NpcStorage

@@ -1,0 +1,9 @@
+use ::endsky_npc::storage::NpcStorage
+use ::endsky_npc::storage::Dialogue
+
+dispatch :storage[npc:demo] to NpcStorage
+dispatch :storage[quest:demo] to struct {
+  [string]: struct {
+    [string]: Dialogue
+  }
+}

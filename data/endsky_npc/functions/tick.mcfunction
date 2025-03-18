@@ -8,7 +8,7 @@ execute as @e[tag=npc.figure,scores={npc.reset=1..}] at @s run function endsky_n
 
 scoreboard players operation $current npc.split = $gametime npc.utils
 scoreboard players operation $current npc.split %= $20 npc.const
-execute as @e[type=minecraft:marker,tag=npc.idle,predicate=endsky_npc:idle/split_match] run function endsky_npc:idle/check
+#execute as @e[type=minecraft:marker,tag=npc.idle,predicate=endsky_npc:idle/split_match] run function endsky_npc:idle/check
 
 execute if data storage endsky_npc:utils Execute[] run function endsky_npc:utils/system_execute
 

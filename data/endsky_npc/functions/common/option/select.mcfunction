@@ -3,7 +3,7 @@ $execute if data storage endsky_npc:common Data.Dialogue.Options.List[$(index)].
 execute if score $condition npc.state matches 0 run return 0
 data modify storage endsky_npc:common Data.Dialogue.Sub set value 1b
 $data modify storage endsky_npc:common Data.Dialogue.Texts set from storage endsky_npc:common Data.Dialogue.Options.List[$(index)].React
-$execute store result storage endsky_npc:common Data.Dialogue.Options.LoopBack byte 1 run data get storage endsky_npc:common Data.Dialogue.Options.List[$(index)].LoopBack
+$execute if data storage endsky_npc:common Data.Dialogue.Options.List[$(index)].LoopBack run data modify storage endsky_npc:common Data.Dialogue.Options.LoopBack set from storage endsky_npc:common Data.Dialogue.Options.List[$(index)].LoopBack
 $data modify storage endsky_npc:common Data.Dialogue.Options.List[$(index)].Extra.Hidden set value {}
 $data modify storage endsky_npc:common Data.Dialogue.Options.List[$(index)].Extra.Hidden set from storage endsky_npc:common Data.Dialogue.Extra
 $data modify storage endsky_npc:common Data.Dialogue.Extra set from storage endsky_npc:common Data.Dialogue.Options.List[$(index)].Extra

@@ -1,7 +1,6 @@
 scoreboard players set @s npc.state 2
 scoreboard players set @s npc.option 0
 scoreboard players set @s npc.look_option 0
-data modify storage endsky_npc:common Data.Dialogue.Option set value 1b
 execute store result score $count npc.option if data storage endsky_npc:common Data.Dialogue.Options.List[]
 execute if score $count npc.option matches 1 run function endsky_npc:common/option/summon_1
 execute if score $count npc.option matches 2 run function endsky_npc:common/option/summon_2

@@ -2,6 +2,7 @@
 tag @s remove npc.idle
 scoreboard players reset @s npc.idle
 $data modify storage endsky_npc:common Data set from storage npc:$(region) $(npc)
+$data modify storage endsky_npc:common Data.Id set value {region:$(region),npc:$(npc)}
 execute store result score @s npc.trader run data get storage endsky_npc:common Data.Trader
 $execute if score @s npc.trader matches 0 run function npc:$(region)/$(npc)/override
 execute store success score @s npc.quest if data storage endsky_npc:common Data.Dialogue

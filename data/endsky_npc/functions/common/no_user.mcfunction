@@ -1,5 +1,6 @@
 scoreboard players set @a[tag=npc.user] npc.state 0
-execute if data entity @e[limit=1,type=minecraft:marker,tag=npc.this] data.Dialogue.Extra.LeaveCommand run function endsky_npc:common/extra/leave_command_server
+data modify storage endsky_npc:common Data set from entity @e[limit=1,type=minecraft:marker,tag=npc.this] data
+execute if data storage endsky_npc:common Data.Dialogue.Extra.LeaveCommand run function endsky_npc:common/extra/leave_command_server
 scoreboard players set @e[limit=1,type=minecraft:interaction,tag=npc.this,tag=!npc.option] npc.occupied 0
 scoreboard players reset @e[tag=npc.this] npc.user
 scoreboard players set @s npc.reset 20

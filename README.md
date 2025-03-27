@@ -33,8 +33,22 @@
     - [進度](#進度)
     - [函數](#函數)
   - [互動設定](#互動設定)
-    - [通常設定](#通常設定)
-    - [商店設定](#商店設定)
+    - [根設定](#根設定)
+      - [通常NPC](#通常npc)
+      - [商店NPC](#商店npc)
+    - [設定物件列表](#設定物件列表)
+      - [對話設定](#對話設定)
+      - [離開設定](#離開設定)
+      - [閒置設定](#閒置設定)
+      - [音效設定](#音效設定)
+      - [交易選項設定](#交易選項設定)
+      - [選項列表設定](#選項列表設定)
+      - [額外設定](#額外設定)
+      - [選項設定](#選項設定)
+      - [時間範圍設定](#時間範圍設定)
+      - [物品堆疊設定](#物品堆疊設定)
+      - [音效覆寫設定](#音效覆寫設定)
+      - [選項條件設定](#選項條件設定)
   - [任務流程](#任務流程)
     - [任務節點](#任務節點)
     - [任務對話](#任務對話)
@@ -125,66 +139,209 @@ NPC的基本函數如下列所示:
 (因此請先確保自己能夠操作 `/data modify` 指令的相關基礎功能再來喔。)  
 每個NPC都有其獨立的 `storage`，位置為 `npc:<region_id>` 中的 `<npc_id>` 標籤，這些位置底下的子標籤會影響該NPC的行為，以下將列出有效的子標籤。  
 
-### 通常設定
+### 根設定
 
-此區為所有NPC皆擁有的設定。  
+#### 通常NPC
+The following are the settings for all NPCs.  
+下列為所有NPC皆擁有的設定。  
 
-* Normal (list of compounds) - 可儲存多個通常對話，預設按照順序觸發
-  * Texts (list of json strings) - 必填，包含多個 "json string" 的列表，該對話之多行內容，按順序觸發
-  * Once (boolean) - 選填，若設為 `1b`，此對話觸發後將從 `storage` 中刪除，無法再次顯示
-  * Options (list of compounds) - 選填，於通常對話或選項對話結束後將會進入選項階段，最多四個選項 (會多顯示一個「離開」選項)
-    * Option (json string) - 顯示於選項之文字
-    * React (list of json strings) - 包含多個 "json string" 的列表，該選項對話之多行內容，按順序觸發 (同Texts之寫法)
-    * Condition (compound) - 選項條件，若玩家不符合條件將無法觸發該選項(以下皆以觸發玩家為執行者及執行位置)
-      * Type (string) 條件種類，可為 "item"、"score" 或是 "command"
-      * Value
-        * Type為 "item" 的情況下，以 `{id,Count(,tag)}` 的形式填入欲偵測的物品。`Count` 為數量下限，若有多餘的資料會影響判斷。
-        * Type為 "score" 的情況下，以 `{score,target,range}` 的形式填入欲偵測的分數及範圍。其中 `range` 可為單純的整數或是 `"a..b"` 的形式。
-        * Type為 "command" 的情況下，以字串的形式填入完整的指令。若指令執行的結果不為0則通過。
-    * End (boolean) - 若設為 `1b`，此選項對話結束後將不會回到選項
-    * Extra (compound) - 額外區域，用於儲存選項的回呼函數設定及更多額外設定，詳細內容請見下方同名項目
-  * Quest (boolean) - 選填，任務選項模式，於Options存在時才有效果。若設為 `1b`，進入選項時將不會出現「離開」選項，且選項對話結束時亦不會再次進入選項
-  * NoExit (boolean) - 選填，若設為 `1b`，進入選項時將不會出現「離開」選項 (選項對話結束時會再次回到選項)。
-  * Extra (compound) - 額外區域，目前用於儲存通常對話的回呼函數設定及更多額外設定
-    * StartCommand (string) - 合法指令的字串，將於對話開始時額外執行此指令，執行者為對話中的玩家
-    * EndCommand (string) - 合法指令的字串，將於對話正常結束時額外執行此指令，執行者為對話中的玩家
-    * LeaveCommand (string) - 合法指令的字串，將於玩家離開對話距離或登出導致對話結束時額外執行此指令，執行者為對話中的玩家，若玩家登出則會由伺服器執行
-    * SoundOverrides (list of compounds) - 能於指定的對話階段以此設定的內容覆蓋音效池
-      * index (int) - 指定的對話項序數 (0-based)，`SoundOverrides` 內的項目應依此項數值由小至大排列，否則無法正常運作
-      * pool (list of compounds) - 內容同下方 `SoundPool` 項目
-* NormalRandom (boolean) - 選填，若設為 `1b`，多個通常對話將以隨機序列被觸發
-* Exit (compound) - 於Options存在或Trader為`1b`時才有效果，將於點選「離開」選項後觸發此處的對話
-  * Texts (list of json strings) - 包含多個 "json string" 的列表，該對話之多行內容，按順序觸發
-  * Extra (compound) - 額外區域，用於儲存結束對話的回呼函數設定及更多額外設定，詳細內容請見上方同名項目
-* Idle (list of compounds) - 選填，NPC閒置 (不在與玩家互動) 時，若此列表有內容，將會以設定的時長與間隔顯示文字於NPC頭上
-  * Text (json string) - 顯示的文字
-  * Duration (compound or int) - 文字顯示的秒數，可為固定值 (整數) 或浮動值 (見下列標籤)
-    * max (int) - 隨機數 (uniform) 的上界，應大於min
-    * min (int) - 隨機數 (uniform) 的下界，不得小於0
-  * Rest (compound or int) - 距離下次文字顯示的秒數，格式同 `Duration`
-  * SoundPool (list of compunds) - 選填，若存在則覆蓋預設的音效池，格式同下
-* SoundPool (list of compounds) - 選填，內容為玩家觸發對話時會隨機撥放其中一個音效，若無此設定則套用默認音效 (村民嘀咕聲)
-  * id (string) - 必填，音效的完整id
-  * setting (compound) - 選填，效果同 `/playsound` 指令的選填參數，若無則套用預設參數
-    * volume (float) - 選填，音量，數值應大於或等於0.0
-    * pitch (float) - 選填，音高，數值應包含於0.0至2.0之間，0.0至0.5間的值等同於0.5
-    * minVolume (float) - 選填，最小音量，數值應包含於0.0至1.0之間 (此設定若大於0.0，將使所有玩家皆能聽到此音效)
+* Normal:
+  * List of [dialogue setting](#對話設定) objects. Stores multiple normal dialogues, witch will be selected in order by default.
+  * [對話設定](#對話設定)物件的列表。可儲存多個普通對話，預設會按順序選擇。
+* NormalRandom:
+  * Boolean. If true, the dialogues will be randomly selected. Defaults to false.
+  * 布林值。若為 true，對話將會隨機選擇。預設為 false。
+* Exit:
+  * [Exit setting](#離開設定) object. The dialogue when the player exits the NPC. Effective only when options is triggered or "Trader" is true.
+  * [離開設定](#離開設定)物件。玩家離開 NPC 時的對話。僅在選項觸發或 "Trader" 為 true 時有效。
+* Idle:
+  * [Idle setting](#閒置設定) object. The texts when the NPC is idle.
+  * [閒置設定](#閒置設定)物件。NPC 閒置時的文字。
+* SoundPool:
+  * List of [sound setting](#音效設定) objects. Common sound pool where sounds will be choosen randomly from when the NPC displays any text. If omitted, the default villager sound will be played.
+  * [音效設定](#音效設定)物件的列表。NPC 顯示任何文字時將於其中隨機選擇音效的通用音效池。若省略，將播放預設的村民音效。
 
-### 商店設定
+#### 商店NPC
+Trader NPCs has more settings besides the settings above. The following are the extra settings for the trader NPCs.  
+商店NPC除了上述設定外需要設定更多東西。下列為商店NPC獨有的額外設定。  
 
-此區為商店NPC獨有的設定，商店NPC亦適用所有的通常設定。  
+* Trader:
+  * Boolean. If true, the NPC will be a trader. Defaults to false.
+  * 布林值。若為 true，NPC 將會是一個商人。預設為 false。
+* TraderNormal:
+  * List of [dialogue setting](#對話設定) objects. Effective only when "Trader" is true. The dialogues for trader NPCs after triggering "chat".
+  * [對話設定](#對話設定)物件的列表。僅在 "Trader" 為 true 時有效。觸發「交談」後商人 NPC 的普通對話。
+* TraderNormalRandom:
+  * Boolean. Effective only when "Trader" is true. If true, the trader dialogues will be randomly selected. Defaults to false.
+  * 布林值。僅在 "Trader" 為 true 時有效。若為 true，商人對話將會隨機選擇。預設為 false。
+* Buy:
+  * List of [trading option setting](#交易選項設定) objects. Effective only when "Trader" is true. Trading options inside the "Buy" villager.
+  * [交易選項設定](#交易選項設定)物件的列表。僅在 "Trader" 為 true 時有效。「購入」村民內的交易選項。
+* Sell:
+  * List of [trading option setting](#交易選項設定) objects. Effective only when "Trader" is true. Trading options inside the "Sell" villager.
+  * [交易選項設定](#交易選項設定)物件的列表。僅在 "Trader" 為 true 時有效。「售出」村民內的交易選項。
 
-* Trader (boolean) - 若設為 `1b`，此NPC將被轉換成商店，並在通常對話結束後進入交易選項
-* TraderNormal (list of compounds) - 選填，可儲存多個商店對話，於交易選項中選擇「交談」後顯示，預設按照順序觸發，單個對話結束後將回到交易選項
-  * 與Normal之內容相同
-* TraderNormalRandom (boolean) - 選填，若設為 `1b`，多個商店對話將以隨機序列被觸發
-* Buy (list of compounds) - 「購入」內的交易選項，除了些許細部調整外，其餘基本與村民之交易選項相同
-  * buy (compound) - 玩家應交付的物品，可為 `{id, tag, Count}` 格式或 `{Name, Count}` 格式，其中 `Name` 為字串，應填入戰利品表路徑 (如同在 `/loot` 指令中打的那樣)
-  * buyB (compound) - 玩家應交付的物品，格式同buy
-  * sell (compound) - 玩家將獲得的物品，格式同buy
-  * maxUses (int) - 玩家最多可交易的次數，若填入2147483647則代表可以進行無限次交易
-* Sell (list of compounds) - 「售出」內的交易選項，除了些許細部調整外，其餘基本與村民之交易選項相同
-  * 格式同Buy
+### 設定物件列表
+
+#### 對話設定
+
+* Texts:
+  * List of text components. The multiple dialogue texts that will be orederly displayed.
+  * 文字元件的列表。將會按順序顯示的多段對話文字。
+* Once:
+  * Boolean. Optional. If true, the dialogue will be triggered only once. Defaults to false.
+  * 布林值。選填。若為 true，對話將只會觸發一次。預設為 false。
+* Options:
+  * [Option list setting](#選項列表設定) object. Optional. If present, a list of options will be displayed when the dialogue ends.
+  * [選項列表設定](#選項列表設定)物件。選填。若存在，對話結束時將會顯示選項列表。
+* Extra:
+  * [Extra setting](#額外設定) object. Optional. Common extra settings for dialogues.
+  * [額外設定](#額外設定)物件。選填。對話的通用額外設定。
+
+#### 離開設定
+
+* Texts:
+  * List of text components. The multiple dialogue texts that will be orederly displayed.
+  * 文字元件的列表。將會按順序顯示的多段對話文字。
+* Extra:
+  * [Extra setting](#額外設定) object. Optional. Common extra settings for dialogues.
+  * [額外設定](#額外設定)物件。可選。對話的通用額外設定。
+
+#### 閒置設定
+
+* Text:
+  * The single dialogue text that will be displayed. The one-lined text that will be displayed.
+  * 將會顯示的單段對話文字。將會顯示的單行文字。
+* Duration:
+  * [Time range setting](#時間範圍設定) object. The display duration in seconds. Fixed value and range representation are both supported.
+  * [時間範圍設定](#時間範圍設定)物件。顯示時間（秒）。支援固定值和範圍表示。
+* Rest:
+  * [Time range setting](#時間範圍設定) object. The rest time in seconds. Fixed value and range representation are both supported.
+  * [時間範圍設定](#時間範圍設定)物件。休息時間（秒）。支援固定值和範圍表示。
+* SoundPool:
+  * List of [sound setting](#音效設定) objects. Optional. Sounds that will be played when the idle text is displayed. If omitted, the sound pool in the root is used.
+  * [音效設定](#音效設定)物件的列表。可選。當顯示閒置文字時將會播放的音效。若省略，將使用根目錄中的音效池。
+
+#### 音效設定
+
+* id:
+  * String. The sound event ID.
+  * 字串。音效事件 ID。
+* setting:
+  * Optional. The detailed sound setting.
+  * 可選。音效的詳細設定。
+  * volume:
+    * Float. Optional. The volume of the sound. Must be greater than or equal to 0. Defaults to 1.
+    * 單精度浮點數。可選。音效的音量。必須大於或等於 0。預設為 1。
+  * pitch:
+    * Float. Optional. The pitch of the sound. Must be inclusivly between 0 and 2. Values less than 0.5 are equavalent to 0.5. Defaults to 1.
+    * 單精度浮點數。可選。音效的音調。必須在 0 到 2 之間。小於 0.5 的值等效於 0.5。預設為 1。
+  * minVolume:
+    * Float. Optional. The minimum volume of the sound. Must be inclusivly between 0 and 1. Valus greater than 0 will make all players hear the sound regardless of distance. Defaults to 0.
+    * 單精度浮點數。可選。音效的最小音量。必須在 0 到 1 之間。大於 0 的值將使所有玩家無論距離如何都能聽到音效。預設為 0。
+
+#### 交易選項設定
+
+* buy:
+  * [Item stack setting](#物品堆疊設定) object. The item stack needed for the offer.
+  * [物品堆疊設定](#物品堆疊設定)物件。交易所需的物品堆疊。
+* bugB:
+  * [Item stack setting](#物品堆疊設定) object. Optional. The extra item stack needed for the offer.
+  * [物品堆疊設定](#物品堆疊設定)物件。可選。交易所需的額外物品堆疊。
+* sell:
+  * [Item stack setting](#物品堆疊設定) object. The item stack that the player will get from the offer.
+  * [物品堆疊設定](#物品堆疊設定)物件。玩家將從交易中獲得的物品堆疊。
+* maxUses:
+  * Integer. The maximum number of times the offer can be used. 2147483647 for infinite.
+  * 整數。交易可使用的最大次數。2147483647 表示無限次數。
+
+#### 選項列表設定
+
+* List:
+  * List of [option setting](#選項設定) objects. The options to choose from. The maximum number of options is 4.
+  * [選項設定](#選項設定)物件的列表。可選擇的選項。最多 4 個選項。
+* LoopBack:
+  * Boolean. Optional. If true, after the chosen dialogue ends, the options will be displayed again. Defaults to false.
+  * 布林值。選填。若為 true，在選擇的對話結束後，選項將會再次顯示。預設為 false。
+* NoExit:
+  * Boolean. Optional. If true, the "Exit" option will not show. Defaults to false.
+  * 布林值。選填。若為 true，將不會顯示「離開」選項。預設為 false。
+
+#### 額外設定
+
+* StartCommand:
+  * Command as string. Optional. The command that will be executed when the dialogue starts.
+  * 字串形式的指令。可選。對話開始時將會執行的指令。
+* EndCommand:
+  * Command as string. Optional. The command that will be executed when the dialogue ends normally.
+  * 字串形式的指令。可選。對話正常結束時將會執行的指令。
+* LeaveCommand:
+  * Command as string. Optional. The command that will be executed when the dialogue ends due to the player leaving.
+  * 字串形式的指令。可選。因玩家離開導致對話結束時將會執行的指令。
+* SoundOverrides:,
+  * List of [sound override setting](#音效覆寫設定) objects. Optional. Overrides sound pool for the indicated section of dialogue.
+  * [音效覆寫設定](#音效覆寫設定)物件的列表。可選。覆蓋指定對話部分的音效池。
+
+#### 選項設定
+
+* Option:
+  * Text component. The text that will be displayed as the option name.
+  * 文字元件。將會顯示為選項名稱的文字。
+* React:
+  * List of text components. The multiple dialogue texts that will be orederly displayed when the option is selected.
+  * 文字元件的列表。選擇該選項時將會按順序顯示的多段對話文字。
+* Condition:
+  * [Option condition setting](#選項條件設定) obejct. Optional. If present, the option won't be selectable if the condition do not match.
+  * [選項條件設定](#選項條件設定)物件。選填。若此項存在，當條件不符合時該選項將無法選擇。
+* LoopBack:
+  * Boolean. Optional. Independent setting for whether the same options to be displayed again when the dialogue ends.
+  * 布林值。選填。獨立設定對話結束後是否再次顯示相同選項。
+* Extra:
+  * [Extra setting](#額外設定) object. Optional. Common extra settings for dialogues.
+  * [額外設定](#額外設定)物件。選填。對話的通用額外設定。
+
+#### 時間範圍設定
+Can be a simple integer or the following structure:  
+可為單純的整數或下列結構:  
+
+* min:
+  * Integer. The minimum value of the range. Must be greater than or equal to 0.
+  * 整數。範圍的最小值。必須大於或等於 0。
+* max:
+  * Integer. The maximum value of the range. Must be greater than the minimum value.
+  * 整數。範圍的最大值。必須大於最小值。
+
+#### 物品堆疊設定
+Can be a ordinary item stack representation or the following structure:  
+可為正常的物品堆疊表示法或下列結構:  
+
+* Name:
+  * ID of the loot table.
+  * 戰利品表的 ID。
+* Count:
+  * Until 1.20.5. Byte. Number of items in the stack.
+  * 至 1.20.5 前。Byte 整數。堆疊中的物品數量
+* count:
+  * Since 1.20.5. Integer. Number of items in the stack.
+  * 自 1.20.5 起。整數。堆疊中的物品數量
+
+#### 音效覆寫設定
+
+* index:
+  * Integer. The index of the dialogue section that the sound pool will be overridden.
+  * 整數。要覆蓋音效池的目標對話段落的索引。
+* pool:
+  * List of [sound setting](#音效設定) objects. The sound pool to use instead.
+  * [音效設定](#音效設定)物件的列表。要使用的音效池。
+
+#### 選項條件設定
+
+* Type:
+  * String. Type of the condition, can be "item", "score", or "command".
+  * 字串。條件的類型，可以是 "item"、"score" 或 "command"。
+* Value:
+  * Content depends on the type of the condition.
+  * 內容取決於條件的類型。
 
 ## 任務流程
 
@@ -246,4 +403,4 @@ Extra標籤中的StartCommand、EndCommand、LeaveCommand應設為一個合法�
 
 
 如果還有有任何疑問，可以聯絡作者本人，如果聯絡不上，那再看一遍這個檔案好了。  
-字超多，看不太懂，還是不清楚要怎麼做，我知道。  
+字超多，看不太懂，還是不清楚要怎麼做，我知道。

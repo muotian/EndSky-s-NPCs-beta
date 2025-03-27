@@ -1,7 +1,11 @@
 {
   "pack": {
     "description": "A datapack for customizable NPCs",
-    "pack_format": 41
+    "pack_format": 48,
+    "supported_formats": {
+      "min_inclusive": 48,
+      "max_inclusive": 61
+    }
   },
   "overlays": {
     "entries": [

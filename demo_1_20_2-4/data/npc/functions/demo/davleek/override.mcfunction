@@ -1,0 +1,3 @@
+execute if score $demo.sus_mysterious_stone quest.state matches 1 unless data storage endsky_npc:common Data.Dialogue run data modify storage endsky_npc:common Data.Dialogue set from storage quest:demo sus_mysterious_stone.Start
+execute if score $demo.sus_mysterious_stone quest.state matches 2 unless data storage endsky_npc:common Data.Dialogue run data modify storage endsky_npc:common Data.Dialogue set from storage quest:demo sus_mysterious_stone.Item
+execute if score $demo.sus_mysterious_stone quest.state matches 3 unless data storage endsky_npc:common Data.Dialogue run data modify storage endsky_npc:common Data.Dialogue set from storage quest:demo sus_mysterious_stone.Reward

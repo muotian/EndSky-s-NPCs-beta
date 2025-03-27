@@ -1,0 +1,8 @@
+{
+  "env": {
+    "useFilePolling": true
+  },
+  "lint": {
+    "idOmitDefaultNamespace": false
+  }
+}

@@ -13,14 +13,7 @@
         }
       },
       {
-        "directory": "system_1_20_5-6",
-        "formats": {
-          "min_inclusive": 41,
-          "max_inclusive": 41
-        }
-      },
-      {
-        "directory": "demo_1_20_2-4",
+        "directory": "system_1_20_2-4",
         "formats": {
           "min_inclusive": 18,
           "max_inclusive": 26
@@ -31,6 +24,13 @@
         "formats": {
           "min_inclusive": 41,
           "max_inclusive": 41
+        }
+      },
+      {
+        "directory": "demo_1_20_2-4",
+        "formats": {
+          "min_inclusive": 18,
+          "max_inclusive": 26
         }
       }
     ]

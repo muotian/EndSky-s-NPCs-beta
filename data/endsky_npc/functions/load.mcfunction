@@ -39,8 +39,3 @@ scoreboard players set @e[type=minecraft:marker,tag=npc.idle] npc.idle -1
 # 任務初始化
 function quest:demo/mysterious_stone/dialogues
 function quest:demo/sus_mysterious_stone/dialogues
-
-#declare storage endsky_npc:common
-#declare storage endsky_npc:trader
-#declare storage endsky_npc:utils
-

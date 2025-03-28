@@ -12,7 +12,6 @@ scoreboard objectives add npc.idle dummy
 scoreboard objectives add npc.count dummy
 scoreboard objectives add npc.quest dummy
 scoreboard objectives add npc.trader dummy
-scoreboard objectives add npc.trader_rotation dummy
 scoreboard objectives add npc.option dummy
 scoreboard objectives add npc.look_option dummy
 scoreboard objectives add npc.reset dummy

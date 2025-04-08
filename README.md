@@ -1,6 +1,6 @@
 # 末天的恩批吸-beta
 
-**適用版本:** java-1.20.2~1.20.4 (之後的遊戲版本等我有空再說，不保證能與任何的伺服器插件或模組相容)  
+**適用版本:** java-1.20.2~1.21.5 (使用原版資料包內建的「覆蓋」功能實現，不保證能與任何的伺服器插件或模組相容)  
 
 歡迎使用末天的恩批吸，此資料包如其名，是一個幫你處理NPC的資料包。  
 
@@ -33,6 +33,7 @@
     - [進度](#進度)
     - [函數](#函數)
   - [互動設定](#互動設定)
+    - [MCDOC](#mcdoc)
     - [根設定](#根設定)
       - [通常NPC](#通常npc)
       - [商店NPC](#商店npc)
@@ -92,24 +93,24 @@ NPC系統使用了以下三個命名空間:
 
 NPC的基本進度如下列所示:
 
-* `data/npc/advancements/<region_id>/<npc_id>/start.json`
-* `data/npc/advancements/<region_id>/<npc_id>/next.json`
+* `data/npc/advancement/<region_id>/<npc_id>/start.json`
+* `data/npc/advancement/<region_id>/<npc_id>/next.json`
 
 其中 "start" 進度會偵測玩家開始與特定NPC互動，"next" 進度則能偵測所有後續的互動。  
 
 以下提供各檔案之模板，請於複製到目標檔案夾後更改檔案名稱及後綴，將 `<region_id>` 替換成地區代號、`<npc_id>` 替換成NPC代號 (請全部使用英文小寫字母及英文底線)。  
-* "start" 進度之[模板](data/npc/advancements/template/start)
-* "next" 進度之[模版](data/npc/advancements/template/next)
+* "start" 進度之[模板](data/npc/advancement/template/start)
+* "next" 進度之[模版](data/npc/advancement/template/next)
 
 ### 函數
 
 NPC的基本函數如下列所示:
 
-* `data/npc/functions/<region_id>/<npc_id>/summon.mcfunction`
-* `data/npc/functions/<region_id>/<npc_id>/dialogues.mcfunction`
-* `data/npc/functions/<region_id>/<npc_id>/start.mcfunction`
-* `data/npc/functions/<region_id>/<npc_id>/next.mcfunction`
-* `data/npc/functions/<region_id>/<npc_id>/override.mcfunction`
+* `data/npc/function/<region_id>/<npc_id>/summon.mcfunction`
+* `data/npc/function/<region_id>/<npc_id>/dialogues.mcfunction`
+* `data/npc/function/<region_id>/<npc_id>/start.mcfunction`
+* `data/npc/function/<region_id>/<npc_id>/next.mcfunction`
+* `data/npc/function/<region_id>/<npc_id>/override.mcfunction`
 
 此五個函數可分為「設定類」及「執行類」。  
 
@@ -122,16 +123,16 @@ NPC的基本函數如下列所示:
 
 
 以下提供各檔案之模板，請於複製到目標檔案夾後更改檔案名稱及後綴，將 `<region_id>` 替換成地區代號、`<npc_id>` 替換成NPC代號 (請全部使用英文小寫字母及英文底線，不接受空格)。  
-* "summon" 函數之[模板](data/npc/functions/template/summon)
+* "summon" 函數之[模板](data/npc/function/template/summon)
   * 此函數中應召喚三種實體
     1. 顯示本體: 通常為盔甲架或村民，亦可使用其他實體。會於對話中持續面向啟動對話的玩家，對話結束後將轉回初始設定的轉向。其CustomName用於儲存顯示的NPC名稱。
        * 可召喚其他顯示用實體，應有的tag有 `"npc.tag"` 及 `"npc.<redion_id>.<npc_id>"`。
     2. 互動實體: 用於偵測玩家互動，觸發進度。其碰撞箱大小設定應包覆整個顯示本體，或是符合玩家的直覺。
     3. 特製名條: 本系統使用文字顯示實體來替代傳統的實體名條，他會在進入和離開對話時移動位置。一般來說這個只需要調整其召喚之相對高度即可 (建議為顯示本體碰撞箱高度+0.475)，其餘NBT不須調整。
-* "dialogue" 函數之[普通模板](data/npc/functions/template/dialogues%20(common))及[商店模板](data/npc/functions/template/dialogues%20(trader))，寫法將在[互動設定](#互動設定)中詳細說明
-* "start" 函數之[模板](data/npc/functions/template/start)
-* "next" 函數之[模板](data/npc/functions/template/next)
-* "override" 函數之[模板](data/npc/functions/template/override)
+* "dialogue" 函數之[普通模板](data/npc/function/template/dialogues%20(common))及[商店模板](data/npc/function/template/dialogues%20(trader))，寫法將在[互動設定](#互動設定)中詳細說明
+* "start" 函數之[模板](data/npc/function/template/start)
+* "next" 函數之[模板](data/npc/function/template/next)
+* "override" 函數之[模板](data/npc/function/template/override)
 
 ## 互動設定
 
@@ -139,7 +140,13 @@ NPC的基本函數如下列所示:
 (因此請先確保自己能夠操作 `/data modify` 指令的相關基礎功能再來喔。)  
 每個NPC都有其獨立的 `storage`，位置為 `npc:<region_id>` 中的 `<npc_id>` 標籤，這些位置底下的子標籤會影響該NPC的行為，以下將列出有效的子標籤。  
 
+### MCDOC
+
+Mcdoc是在[Spyglass](https://github.com/SpyglassMC/Spyglass)(一個VSCode的資料包資源包格式插件)中用於定義SNBT路徑格式的語法，對於工具資料包來說此功能尤為方便。  
+此部分的格式我有寫一個 `.mcdoc` 檔案支援，但對於每個 `storage` 都需要額外設定才會套用上去。關於這部分的教學我稍後或許會補上。  
+
 ### 根設定
+
 
 #### 通常NPC
 The following are the settings for all NPCs.  
@@ -351,8 +358,8 @@ Can be a ordinary item stack representation or the following structure:
 每個任務要分配一個代號 (`quest_id`)，例如: `mysterious_stone`。  
 同一個任務相關的進度及函數應儲存在下列路徑:
 
-* `data/quest/advancements/<region_id>/<quest_id>/` 
-* `data/quest/functions/<region_id>/<quest_id>/`
+* `data/quest/advancement/<region_id>/<quest_id>/` 
+* `data/quest/function/<region_id>/<quest_id>/`
   
 且應將記分板 `quest.state` 在假玩家 `$<region_id>.<quest_id>` 底下的分數作為任務狀態之紀錄。  
 任務狀態記分板中的分數為判斷當前任務進度的重要依據。  
@@ -372,18 +379,18 @@ Can be a ordinary item stack representation or the following structure:
 
 ### 任務對話
 
-若要使一個NPC在任務到達某個進度時觸發特殊對話，應在其["override"函數](#函數)中插入判斷任務狀態記分板的條件式，並從任務的 `storage` 提取該特殊對話之設定，格式請參考[模板檔案](data/npc/functions/template/override)。  
+若要使一個NPC在任務到達某個進度時觸發特殊對話，應在其["override"函數](#函數)中插入判斷任務狀態記分板的條件式，並從任務的 `storage` 提取該特殊對話之設定，格式請參考[模板檔案](data/npc/function/template/override)。  
 而任務相關特殊對話所應儲存的位置為: `storage quest:<region_id> <quest_id>.<dialogue_name>` (其中"dialogue_name"只要不重複並命名並能夠辨識其功能即可)。  
 特殊對話的格式與NPC系統中的Normal內的一項相同。  
 同一個任務的特殊對話，建議以同一個函數設定並按照順序排列，<u>**強烈建議**</u>為每行加上註解，說明此段對話於記分板為幾分時，由哪個NPC所觸發。  
-於此提供一個任務對話設定函數的[模板](data/quest/functions/template/dialogues)
+於此提供一個任務對話設定函數的[模板](data/quest/function/template/dialogues)
 
 ### 回呼函數
 
 如果要在與NPC對話時觸發一個任務節點，應使用NPC系統中的「回呼函數」功能 (參見[通常設定](#通常設定)的Extra標籤)。  
 Extra標籤中的StartCommand、EndCommand、LeaveCommand應設為一個合法指令的字串，通常該指令為呼叫函數的指令，執行者為與該NPC對話中的玩家。  
 使用場合範例: 於「接受任務」選項中放入EndCommand，將在該對話結束後執行「開始任務」的函數。  
-於此提供一個回呼函數的[模板](data/quest/functions/template/callback)。  
+於此提供一個回呼函數的[模板](data/quest/function/template/callback)。  
 
 亦可不由NPC觸發任務節點，此時於其他檔案中直接呼叫一個函數即可。  
 
@@ -392,7 +399,7 @@ Extra標籤中的StartCommand、EndCommand、LeaveCommand應設為一個合法�
 任務進度之提示以「進度」功能達成，預計同一個區域的任務會共用同一個根進度，並且同一個任務的進度提示要串起來，形成明顯的先後關係。  
 任務提示全部設定為隱藏進度 (觸發後才會顯示)。  
 另外，我設計了一個方式可以讓剛上線的玩家自動根據任務記分板的數值更新他自身的進度，詳細情形請見任務提示模板。  
-於此提供一個任務提示的[模板](data/quest/advancements/template/hint)。  
+於此提供一個任務提示的[模板](data/quest/advancement/template/hint)。  
 
 ### 其他建議
 

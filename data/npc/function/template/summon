@@ -3,7 +3,7 @@ kill @e[tag=npc.<region_id>.<npc_id>]
 # 1. 召喚顯示本體，可為盔甲架或其他實體(如: 村民、貓等)
 #    NPC顯示名稱將取用CustomName之內容
 #    每次對話結束時NPC將轉回初始Rotation
-summon minecraft:armor_stand ~ ~ ~ {Tags:["npc.this","npc.tag","npc.figure","npc.<region_id>.<npc_id>"],Rotation:[90.0f,0.0f],CustomName:'{"text":"模板NPC"}',ShowArms:1b,NoBasePlate:1b,NoGravity:1b,Invulnerable:1b,ArmorItems:[{id:"minecraft:leather_boots",count:1b,components:{"minecraft:dyed_color":0}},{id:"minecraft:leather_leggings",count:1b,components:{"minecraft:dyed_color":0}},{id:"minecraft:leather_chestplate",count:1b,components:{"minecraft:dyed_color":0}},{id:"minecraft:player_head",count:1b,components:{"minecraft:profile":"Steve"}}]}
+summon minecraft:armor_stand ~ ~ ~ {Tags:["npc.this","npc.tag","npc.figure","npc.<region_id>.<npc_id>"],Rotation:[90.0f,0.0f],CustomName:{"text":"模板NPC"},ShowArms:1b,NoBasePlate:1b,NoGravity:1b,Invulnerable:1b,equipment:{feet:{id:"minecraft:leather_boots",count:1b,components:{"minecraft:dyed_color":0}},legs:{id:"minecraft:leather_leggings",count:1b,components:{"minecraft:dyed_color":0}},chest:{id:"minecraft:leather_chestplate",count:1b,components:{"minecraft:dyed_color":0}},head:{id:"minecraft:player_head",count:1b,components:{"minecraft:profile":"Steve"}}}}
 
 # 2. 召喚互動實體，可依據顯示本體的碰撞箱大小調整互動實體的寬、高與位置，使其能夠完全包覆顯示本體
 summon minecraft:interaction ~ ~-0.05 ~ {Tags:["npc.this","npc.tag","npc.<region_id>.<npc_id>"],width:0.6f,height:2.1f}

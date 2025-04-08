@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:command",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type":"minecraft:item",
+          "name": "minecraft:stone",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "color": "white",
+                "italic": false,
+                "text": "沒那麼神奇的石頭"
+              }
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "gray",
+                  "text": "某種沒那麼神奇的石頭"
+                },
+                {
+                  "color": "gray",
+                  "text": "或許沒什麼用吧"
+                }
+              ],
+              "mode": "replace_all"
+            },
+            {
+              "function": "minecraft:set_custom_data",
+              "tag": "{not_so_mysterious_stone:{}}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

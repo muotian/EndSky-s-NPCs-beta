@@ -8,25 +8,25 @@ data modify storage npc:<region_id> <npc_id>.NormalRandom set value 0b/1b
 
 # 清空列表
 data modify storage npc:<region_id> <npc_id>.Normal set value []
-data modify storage npc:<region_id> <npc_id>.Normal append value {Texts:['{"text":"這是一個"}','{"text":"通常的模板對話"}']}
-data modify storage npc:<region_id> <npc_id>.Normal append value {Texts:['{"text":"可以用append的方式"}','{"text":"在列表中新增對話"}']}
-data modify storage npc:<region_id> <npc_id>.Normal append value {Texts:['{"text":"商人的通常對話"}','{"text":"建議不用太長"}']}
+data modify storage npc:<region_id> <npc_id>.Normal append value {Texts:[{"text":"這是一個"},{"text":"通常的模板對話"}]}
+data modify storage npc:<region_id> <npc_id>.Normal append value {Texts:[{"text":"可以用append的方式"},{"text":"在列表中新增對話"}]}
+data modify storage npc:<region_id> <npc_id>.Normal append value {Texts:[{"text":"商人的通常對話"},{"text":"建議不用太長"}]}
 # ...
 
 data modify storage npc:<region_id> <npc_id>.TraderNormalRandom set value 0b/1b
 
 # 清空列表
 data modify storage npc:<region_id> <npc_id>.TraderNormal set value []
-data modify storage npc:<region_id> <npc_id>.TraderNormal append value {Texts:['{"text":"商人NPC獨有的功能"}','{"text":"在商店選項點選交談後"}','{"text":"會出現的對話"}','{"text":"這部分就可以長一些"}']}
-data modify storage npc:<region_id> <npc_id>.TraderNormal append value {Texts:['{"text":"這邊同樣可以用append的方式"}','{"text":"新增對話"}']}
+data modify storage npc:<region_id> <npc_id>.TraderNormal append value {Texts:[{"text":"商人NPC獨有的功能"},{"text":"在商店選項點選交談後"},{"text":"會出現的對話"},{"text":"這部分就可以長一些"}]}
+data modify storage npc:<region_id> <npc_id>.TraderNormal append value {Texts:[{"text":"這邊同樣可以用append的方式"},{"text":"新增對話"}]}
 # ...
 
-data modify storage npc:<region_id> <npc_id>.Exit set value {Texts:['{"text":"離開商店選項介面時"}','{"text":"會顯示的對話"}','{"text":"不設定亦可"}']}
+data modify storage npc:<region_id> <npc_id>.Exit set value {Texts:[{"text":"離開商店選項介面時"},{"text":"會顯示的對話"},{"text":"不設定亦可"}]}
 
 # 清空列表
 data modify storage npc:<region_id> <npc_id>.Idle set value []
-data modify storage npc:<region_id> <npc_id>.Idle append value {Text:'{"text":"閒置時定時顯示的文字1，不設定亦可"}',Duration:1,Rest:{min:10,max:20}}
-data modify storage npc:<region_id> <npc_id>.Idle append value {Text:'{"text":"閒置時定時顯示的文字2，不設定亦可"}',Duration:{min:3,max:5},Rest:40}
+data modify storage npc:<region_id> <npc_id>.Idle append value {Text:{"text":"閒置時定時顯示的文字1，不設定亦可"},Duration:1,Rest:{min:10,max:20}}
+data modify storage npc:<region_id> <npc_id>.Idle append value {Text:{"text":"閒置時定時顯示的文字2，不設定亦可"},Duration:{min:3,max:5},Rest:40}
 # ...
 
 # 設定對話音效池 (若無此設定，默認為村民嘀咕聲)

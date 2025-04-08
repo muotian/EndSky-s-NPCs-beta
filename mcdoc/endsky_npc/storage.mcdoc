@@ -1,5 +1,6 @@
 use ::java::world::item::SingleItem
 use ::java::world::item::ItemStack
+use ::java::util::text::Text
 
 struct NpcStorage {
   /// The settings for each NPC.
@@ -43,7 +44,10 @@ struct PerNpcStorage {
 struct Dialogue {
   /// The multiple dialogue texts that will be orederly displayed.
   /// 將會按順序顯示的多段對話文字。
-  Texts: [#[text_component] string],
+  Texts: (
+    #[since="1.21.5"] [Text] |
+    #[until="1.21.5"] [#[text_component] string]
+    ),
   /// Optional. If true, the dialogue will be triggered only once. Defaults to false.
   /// 選填。若為 true，對話將只會觸發一次。預設為 false。
   Once?: boolean,
@@ -70,10 +74,16 @@ struct Options {
 struct Option {
   /// The text that will be displayed as the option name.
   /// 將會顯示為選項名稱的文字。
-  Option: #[text_component] string,
+  Option: (
+    #[since="1.21.5"] Text |
+    #[until="1.21.5"] #[text_component] string
+    ),
   /// The multiple dialogue texts that will be orederly displayed when the option is selected.
   /// 選擇該選項時將會按順序顯示的多段對話文字。
-  React: [#[text_component] string],
+  React: (
+    #[since="1.21.5"] [Text] |
+    #[until="1.21.5"] [#[text_component] string]
+    ),
   /// Optional. If present, the option won't be selectable if the condition do not match.
   /// 選填。若此項存在，當條件不符合時該選項將無法選擇。
   Condition?: Condition,
@@ -148,7 +158,10 @@ struct Extra {
 struct Exit {
   /// The multiple dialogue texts that will be orederly displayed.
   /// 將會按順序顯示的多段對話文字。
-  Texts: [#[text_component] string],
+  Texts: (
+    #[since="1.21.5"] [Text] |
+    #[until="1.21.5"] [#[text_component] string]
+    ),
   /// Optional. Common extra settings for dialogues.
   /// 可選。對話的通用額外設定。
   Extra?: Extra,
@@ -157,7 +170,10 @@ struct Exit {
 struct Idle {
   /// The single dialogue text that will be displayed.
   /// 將會顯示的單段對話文字。
-  Text: #[text_component] string,
+  Text: (
+    #[since="1.21.5"] Text |
+    #[until="1.21.5"] #[text_component] string
+    ),
   /// The display duration in seconds. Fixed value and range representation are both supported.
   /// 顯示時間（秒）。支援固定值和範圍表示。
   Duration: TimeRange,

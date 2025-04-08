@@ -1,5 +1,5 @@
 scoreboard players set @e[type=minecraft:interaction,tag=npc.this] npc.occupied 0
-data modify entity @e[limit=1,type=minecraft:text_display,tag=npc.this] text set value '{"color":"black","text":"","extra":[{"nbt":"CustomName","entity":"@e[limit=1,tag=npc.figure,tag=npc.this]","interpret":true}]}'
+data modify entity @e[limit=1,type=minecraft:text_display,tag=npc.this] text set value {"color":"black","text":"","extra":[{"nbt":"CustomName","entity":"@e[limit=1,tag=npc.figure,tag=npc.this]","interpret":true}]}
 
 $execute unless data storage npc:$(region) $(npc) run function npc:$(region)/$(npc)/dialogues
 $execute at @e[limit=1,tag=npc.figure,tag=npc.this] summon minecraft:marker run function endsky_npc:common/summon/marker {region:"$(region)",npc:"$(npc)"}

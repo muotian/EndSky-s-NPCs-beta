@@ -11,7 +11,7 @@ scoreboard players operation @s npc.timer += $rest npc.timer
 scoreboard players set @s npc.idle 0
 data modify storage endsky_npc:common Data.Idle append from storage endsky_npc:common Data.Idle[0]
 data remove storage endsky_npc:common Data.Idle[0]
-data merge entity @e[limit=1,type=minecraft:text_display,tag=npc.name,tag=npc.this] {text:'{"color":"black","text":"","extra":[{"nbt":"CustomName","entity":"@e[limit=1,tag=npc.figure,tag=npc.this]","interpret":true}]}',start_interpolation:0,interpolation_duration:2,transformation:{translation:[0.0f,-0.255f,0.0f]}}
-data merge entity @e[limit=1,type=minecraft:text_display,tag=npc.text,tag=npc.this] {text:'{"color":"black","text":""}',transformation:{scale:[0.0f,0.0f,0.0f]}}
+data merge entity @e[limit=1,type=minecraft:text_display,tag=npc.name,tag=npc.this] {text:{"color":"black","text":"","extra":[{"nbt":"CustomName","entity":"@e[limit=1,tag=npc.figure,tag=npc.this]","interpret":true}]},start_interpolation:0,interpolation_duration:2,transformation:{translation:[0.0f,-0.255f,0.0f]}}
+data merge entity @e[limit=1,type=minecraft:text_display,tag=npc.text,tag=npc.this] {text:{"color":"black","text":""},transformation:{scale:[0.0f,0.0f,0.0f]}}
 data modify entity @s data set from storage endsky_npc:common Data
 tag @e[tag=npc.this] remove npc.this

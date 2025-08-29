@@ -5,5 +5,5 @@ execute as @e[limit=1,type=minecraft:villager,tag=npc.trader_s,tag=npc.this] if 
 scoreboard players set @e[limit=1,type=minecraft:villager,tag=npc.trader_s,tag=npc.this] npc.reset 6
 
 summon minecraft:interaction ^0.75 ^-1.51 ^0.75 {Tags:["npc.tag","npc.option","npc.blocker","npc.trader_s","npc.this"],width:0.625f,height:1.26f}
-summon minecraft:text_display ^0.75 ^0.45 ^0.75 {Tags:["npc.tag","npc.option","npc.trader_s","npc.this"],text:'{"color":"black","text":"售出"}',alignment:"center",billboard:"vertical",background:-1073741825,transformation:{translation:[0.0f,-0.7375f,0.0f],left_rotation:[0.0f,0.0f,0.0f,1.0f],scale:[0.8f,0.8f,0.8f],right_rotation:[0.0f,0.0f,0.0f,1.0f]}}
+summon minecraft:text_display ^0.75 ^0.45 ^0.75 {Tags:["npc.tag","npc.option","npc.trader_s","npc.this"],text:'{"color":"black","text":"售出"}',brightness:{block:15,sky:0},alignment:"center",billboard:"vertical",background:-1073741825,transformation:{translation:[0.0f,-0.7375f,0.0f],left_rotation:[0.0f,0.0f,0.0f,1.0f],scale:[0.8f,0.8f,0.8f],right_rotation:[0.0f,0.0f,0.0f,1.0f]}}
 summon minecraft:item_display ^0.75 ^0.45 ^0.75 {Tags:["npc.tag","npc.option","npc.trader_s","npc.this"],item:{id:"minecraft:diamond",Count:1b},billboard:"vertical",transformation:{translation:[0.0f,-0.2375f,0.0f],left_rotation:[0.0f,0.0f,0.0f,1.0f],scale:[0.5f,0.5f,0.5f],right_rotation:[0.0f,0.0f,0.0f,1.0f]}}
